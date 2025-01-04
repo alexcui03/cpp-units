@@ -9,9 +9,6 @@
 
 namespace cpp_units {
 
-template <int Symbol>
-struct dimension: utils::constexpr_map<utils::constexpr_pair<Symbol, 1>> {};
-
 // is_dimension_contains<Dimension1, Dimension2> -> check if all Pairs in Dimension1 are in Dimension1, except zeros.
 template <typename Dimension1, typename Dimension2>
 struct is_dimension_contains {
@@ -80,5 +77,10 @@ struct dimension_divide<Dimension1, Dimension2>: dimension_divide<Dimension1, ty
 
 template <typename Dimension1, typename Dimension2>
 using dimension_divide_t = dimension_divide<Dimension1, Dimension2>::type;
+
+template <int Symbol>
+struct dimension: utils::constexpr_map<utils::constexpr_pair<Symbol, 1>> {};
+
+using dimensionless = dimension_divide_t<dimension<0>, dimension<0>>;
 
 }
