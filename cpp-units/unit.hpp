@@ -46,9 +46,9 @@ public:
     }
 
     template <typename OtherType, typename OtherRatio>
-    constexpr unit<Dimension, std::common_type_t<Type, OtherType>, std::common_ratio_t<Ratio, OtherRatio>>
+    constexpr unit<Dimension, std::common_type_t<Type, OtherType>, utils::common_ratio_t<Ratio, OtherRatio>>
         operator-(const unit<Dimension, OtherType, OtherRatio> &rhs) const {
-        using CommonRatio = std::common_ratio_t<Ratio, OtherRatio>;
+        using CommonRatio = utils::common_ratio_t<Ratio, OtherRatio>;
         using Result = unit<Dimension, std::common_type_t<Type, OtherType>, CommonRatio>;
         using Divide1 = std::ratio_divide<Ratio, CommonRatio>;
         using Divide2 = std::ratio_divide<OtherRatio, CommonRatio>;
