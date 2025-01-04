@@ -27,18 +27,27 @@ using dim2 = cpp_units::dimension_multiply_t<dim1, dim1>;
 using dim3 = cpp_units::dimension<'M'>;
 using dim4 = cpp_units::dimension_multiply_t<dim1, dim3>;
 using dim5 = cpp_units::dimension_multiply_t<dim3, dim1>;
+using dim6 = cpp_units::dimension_divide_t<dim1, dim1>;
+using dim7 = cpp_units::dimension_divide_t<dim3, dim3>;
 
 static_assert(cpp_units::is_same_dimension_v<dim1, dim1>);
 static_assert(!cpp_units::is_same_dimension_v<dim1, dim2>);
 static_assert(cpp_units::is_same_dimension_v<dim4, dim5>);
 static_assert(dim1::get_v<'L'> == 1);
 static_assert(dim2::get_v<'L'> == 2);
+static_assert(dim6::get_v<'L'> == 0);
+static_assert(cpp_units::is_same_dimension_v<dim6, dim7>);
+static_assert(!cpp_units::utils::is_same_map_v<dim6, dim7>);
 
 int main() {
-    auto v1 = 1_m;
-    auto v2 = 20_mm;
+    constexpr auto v1 = 1_m;
+    constexpr auto v2 = 20_mm;
+    constexpr auto v3 = v1 - v2;
+    constexpr auto v4 = v1 / v2;
+    constexpr auto v5 = v1 * v2;
 
-    static_assert(std::is_same_v<decltype(v1), cpp_units::metres<std::intmax_t>>);
+    static_assert(cpp_units::is_same_dimension_v<decltype(v4)::dimension, dim6>);
+    static_assert(cpp_units::is_same_dimension_v<decltype(v5)::dimension, dim2>);
 
     return 0;
 }
