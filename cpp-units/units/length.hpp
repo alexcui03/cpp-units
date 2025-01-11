@@ -19,9 +19,9 @@ template <typename Type> using millimetres = length<Type, std::milli>;
 
 inline namespace literals {
 
-CPP_UNITS_DECLARE(kilometres<std::intmax_t>, km)
-CPP_UNITS_DECLARE(metres<std::intmax_t>, m)
-CPP_UNITS_DECLARE(millimetres<std::intmax_t>, mm)
+CPP_UNITS_DECLARE(kilometres, km)
+CPP_UNITS_DECLARE(metres, m)
+CPP_UNITS_DECLARE(millimetres, mm)
 
 }
 

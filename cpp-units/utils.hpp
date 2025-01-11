@@ -8,10 +8,19 @@
 #include <cstdint>
 #include <ratio>
 
-#define CPP_UNITS_DECLARE(unit_type, name) \
+#define CPP_UNITS_DECLARE_INTEGER(unit_type, name) \
     constexpr unit_type operator ""_##name (unsigned long long value) { \
         return unit_type(value); \
     }
+
+#define CPP_UNITS_DECLARE_FLOAT(unit_type, name) \
+    constexpr unit_type operator ""_##name (long double value) { \
+        return unit_type(value); \
+    }
+
+#define CPP_UNITS_DECLARE(unit_template, name) \
+    CPP_UNITS_DECLARE_INTEGER(unit_template<std::intmax_t>, name) \
+    CPP_UNITS_DECLARE_FLOAT(unit_template<long double>, name)
 
 namespace cpp_units::utils {
 

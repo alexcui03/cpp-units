@@ -27,7 +27,7 @@ public:
     constexpr unit(const unit &type) = default;
     constexpr unit(unit &&type) = default;
 
-    constexpr Type value() const { return _value; }
+    constexpr inline Type value() const { return _value; }
 
     constexpr unit<Dimension, Type, Ratio> operator+() const {
         return unit<Dimension, Type, Ratio>(+_value);
@@ -36,40 +36,48 @@ public:
     constexpr unit<Dimension, Type, Ratio> operator-() const {
         return unit<Dimension, Type, Ratio>(-_value);
     }
-
-    template <typename OtherType, typename OtherRatio>
-    constexpr unit<Dimension, std::common_type_t<Type, OtherType>, utils::common_ratio_t<Ratio, OtherRatio>>
-        operator+(const unit<Dimension, OtherType, OtherRatio> &rhs) const {
-        using CommonRatio = utils::common_ratio_t<Ratio, OtherRatio>;
-        using Result = unit<Dimension, std::common_type_t<Type, OtherType>, CommonRatio>;
-        using Divide1 = std::ratio_divide<Ratio, CommonRatio>;
-        using Divide2 = std::ratio_divide<OtherRatio, CommonRatio>;
-        return Result(_value * Divide1::num / Divide1::den + rhs.value() * Divide2::num / Divide2::den);
-    }
-
-    template <typename OtherType, typename OtherRatio>
-    constexpr unit<Dimension, std::common_type_t<Type, OtherType>, utils::common_ratio_t<Ratio, OtherRatio>>
-        operator-(const unit<Dimension, OtherType, OtherRatio> &rhs) const {
-        using CommonRatio = utils::common_ratio_t<Ratio, OtherRatio>;
-        using Result = unit<Dimension, std::common_type_t<Type, OtherType>, CommonRatio>;
-        using Divide1 = std::ratio_divide<Ratio, CommonRatio>;
-        using Divide2 = std::ratio_divide<OtherRatio, CommonRatio>;
-        return Result(_value * Divide1::num / Divide1::den - rhs.value() * Divide2::num / Divide2::den);
-    }
-
-    template <typename OtherDimension, typename OtherType, typename OtherRatio>
-    constexpr unit<dimension_multiply_t<Dimension, OtherDimension>, std::common_type_t<Type, OtherType>, std::ratio_multiply<Ratio, OtherRatio>>
-        operator*(const unit<OtherDimension, OtherType, OtherRatio> &rhs) const {
-        using Result = unit<dimension_multiply_t<Dimension, OtherDimension>, std::common_type_t<Type, OtherType>, std::ratio_multiply<Ratio, OtherRatio>>;
-        return Result(_value * rhs.value());
-    }
-
-    template <typename OtherDimension, typename OtherType, typename OtherRatio>
-    constexpr unit<dimension_divide_t<Dimension, OtherDimension>, std::common_type_t<Type, OtherType>, std::ratio_divide<Ratio, OtherRatio>>
-        operator/(const unit<OtherDimension, OtherType, OtherRatio> &rhs) const {
-        using Result = unit<dimension_divide_t<Dimension, OtherDimension>, std::common_type_t<Type, OtherType>, std::ratio_divide<Ratio, OtherRatio>>;
-        return Result(_value / rhs.value());
-    }
 };
+
+template <typename Dim1, typename Type1, typename Ratio1, typename Dim2, typename Type2, typename Ratio2>
+requires is_same_dimension_v<Dim1, Dim2>
+constexpr auto operator+(const unit<Dim1, Type1, Ratio1> &lhs, const unit<Dim2, Type2, Ratio2> &rhs) {
+    using CommonRatio = utils::common_ratio_t<Ratio1, Ratio2>;
+    using CommonType = std::common_type_t<Type1, Type2>;
+    using Divide1 = std::ratio_divide<Ratio1, CommonRatio>;
+    using Divide2 = std::ratio_divide<Ratio2, CommonRatio>;
+    return unit<Dim1, CommonType, CommonRatio>(
+        static_cast<CommonType>(lhs.value()) * Divide1::num / Divide1::den +
+        static_cast<CommonType>(rhs.value()) * Divide2::num / Divide2::den
+    );
+}
+
+template <typename Dim1, typename Type1, typename Ratio1, typename Dim2, typename Type2, typename Ratio2>
+requires is_same_dimension_v<Dim1, Dim2>
+constexpr auto operator-(const unit<Dim1, Type1, Ratio1> &lhs, const unit<Dim2, Type2, Ratio2> &rhs) {
+    using CommonRatio = utils::common_ratio_t<Ratio1, Ratio2>;
+    using CommonType = std::common_type_t<Type1, Type2>;
+    using Divide1 = std::ratio_divide<Ratio1, CommonRatio>;
+    using Divide2 = std::ratio_divide<Ratio2, CommonRatio>;
+    return unit<Dim1, CommonType, CommonRatio>(
+        static_cast<CommonType>(lhs.value()) * Divide1::num / Divide1::den -
+        static_cast<CommonType>(rhs.value()) * Divide2::num / Divide2::den
+    );
+}
+
+template <typename Dim1, typename Type1, typename Ratio1, typename Dim2, typename Type2, typename Ratio2>
+constexpr auto operator*(const unit<Dim1, Type1, Ratio1> &lhs, const unit<Dim2, Type2, Ratio2> &rhs) {
+    using CommonType = std::common_type_t<Type1, Type2>;
+    return unit<dimension_multiply_t<Dim1, Dim2>, CommonType, std::ratio_multiply<Ratio1, Ratio2>>(
+        static_cast<CommonType>(lhs.value()) * static_cast<CommonType>(rhs.value())
+    );
+}
+
+template <typename Dim1, typename Type1, typename Ratio1, typename Dim2, typename Type2, typename Ratio2>
+constexpr auto operator/(const unit<Dim1, Type1, Ratio1> &lhs, const unit<Dim2, Type2, Ratio2> &rhs) {
+    using CommonType = std::common_type_t<Type1, Type2>;
+    return unit<dimension_divide_t<Dim1, Dim2>, CommonType, std::ratio_divide<Ratio1, Ratio2>>(
+        static_cast<CommonType>(lhs.value()) / static_cast<CommonType>(rhs.value())
+    );
+}
 
 }
