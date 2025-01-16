@@ -5,8 +5,8 @@
 
 #pragma once
 
-#include "constexpr_map.hpp"
-#include "constexpr_string.hpp"
+#include "utils/meta_map.hpp"
+#include "utils/constexpr_string.hpp"
 
 namespace cpp_units {
 
@@ -80,7 +80,7 @@ template <typename Dimension1, typename Dimension2>
 using dimension_divide_t = dimension_divide<Dimension1, Dimension2>::type;
 
 template <utils::constexpr_string Symbol>
-struct dimension: utils::constexpr_map<utils::constexpr_pair<Symbol, 1>> {};
+struct dimension: utils::meta_map<utils::meta_pair<Symbol, 1>> {};
 
 using dimensionless = dimension_divide_t<dimension<"">, dimension<"">>;
 

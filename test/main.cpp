@@ -8,13 +8,13 @@ constexpr cpp_units::utils::constexpr_string str_l = "L";
 constexpr cpp_units::utils::constexpr_string str_m = "M";
 constexpr cpp_units::utils::constexpr_string str_k = "K";
 
-using pair1 = cpp_units::utils::constexpr_pair<str_l, 1>;
-using pair2 = cpp_units::utils::constexpr_pair<str_m, 2>;
-using pair3 = cpp_units::utils::constexpr_pair<str_l, 3>;
+using pair1 = cpp_units::utils::meta_pair<str_l, 1>;
+using pair2 = cpp_units::utils::meta_pair<str_m, 2>;
+using pair3 = cpp_units::utils::meta_pair<str_l, 3>;
 
-using map1 = cpp_units::utils::constexpr_map<pair1, pair2>;
-using map2 = cpp_units::utils::constexpr_map<pair2, pair1>;
-using map3 = cpp_units::utils::constexpr_map<pair1, pair3, pair2>;
+using map1 = cpp_units::utils::meta_map<pair1, pair2>;
+using map2 = cpp_units::utils::meta_map<pair2, pair1>;
+using map3 = cpp_units::utils::meta_map<pair1, pair3, pair2>;
 using map4 = map1::set_t<str_l, 3>;
 using map5 = map1::set_t<str_k, 4>;
 

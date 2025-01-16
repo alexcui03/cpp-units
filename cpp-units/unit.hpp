@@ -8,8 +8,8 @@
 #include <ratio>
 #include <type_traits>
 
+#include "utils/utils.hpp"
 #include "dimension.hpp"
-#include "utils.hpp"
 
 namespace cpp_units {
 

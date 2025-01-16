@@ -5,7 +5,7 @@
 
 #pragma once
 
-#include "../utils.hpp"
+#include "../utils/utils.hpp"
 #include "../dimension.hpp"
 
 namespace cpp_units {
