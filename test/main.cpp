@@ -49,6 +49,8 @@ int main() {
     constexpr auto v3 = v1 - v2;
     constexpr auto v4 = v1 / v2;
     constexpr auto v5 = v1 * v2;
+    constexpr auto v6 = v4 + 3;
+    constexpr auto v7 = 3 + v4;
 
     static_assert(cpp_units::is_same_dimension_v<decltype(v4)::dimension, dim6>);
     static_assert(cpp_units::is_same_dimension_v<decltype(v5)::dimension, dim2>);

@@ -22,10 +22,15 @@ public:
     using ratio = Ratio;
 
     constexpr unit() = default;
-    explicit constexpr unit(const Type &value): _value(value) {};
-    explicit constexpr unit(Type &&value): _value(value) {};
+    explicit constexpr unit(const Type &value): _value(value) {}
+    explicit constexpr unit(Type &&value): _value(value) {}
     constexpr unit(const unit &type) = default;
     constexpr unit(unit &&type) = default;
+
+    // Specialization for dimensionless quantity.
+    constexpr unit(const Type &value) requires is_same_dimension_v<Dimension, dimensionless>: _value(value) {}
+    constexpr unit(Type &&value) requires is_same_dimension_v<Dimension, dimensionless>: _value(value) {}
+    constexpr operator Type() const requires is_same_dimension_v<Dimension, dimensionless> { return _value; }
 
     constexpr inline Type value() const { return _value; }
 
