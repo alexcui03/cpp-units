@@ -11,7 +11,7 @@
 namespace cpp_units {
 
 template <typename Type, typename Ratio = std::ratio<1, 1>>
-using length = unit<dimension<'L'>, Type, Ratio>;
+using length = unit<dimension<"L">, Type, Ratio>;
 
 template <typename Type> using kilometres = length<Type, std::kilo>;
 template <typename Type> using metres = length<Type>;
