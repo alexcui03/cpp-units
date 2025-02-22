@@ -2,11 +2,9 @@
 
 #include <type_traits>
 
+#include "utils.h"
 #include "../cpp-units/utils/constexpr_string.hpp"
 #include "../cpp-units/utils/meta_map.hpp"
-
-#define STATIC_EXPECT_TRUE(expr) static_assert(expr); EXPECT_TRUE(expr);
-#define STATIC_EXPECT_FALSE(expr) static_assert(!(expr)); EXPECT_FALSE(expr);
 
 using namespace cpp_units;
 using namespace cpp_units::utils;
@@ -23,9 +21,11 @@ TEST(ConstexprString, Compare) {
 
     STATIC_EXPECT_TRUE(str1 == str1);
     STATIC_EXPECT_FALSE(str1 == str2);
+    STATIC_EXPECT_FALSE(str2 == str1);
 
     STATIC_EXPECT_FALSE(str1 != str1);
     STATIC_EXPECT_TRUE(str1 != str2);
+    STATIC_EXPECT_TRUE(str2 != str1);
 }
 
 TEST(MetaPair, Constructor) {
@@ -72,6 +72,7 @@ TEST(MetaMap, Compare) {
     using map2 = meta_map<pair2, pair1>;
 
     STATIC_EXPECT_TRUE((is_same_map_v<map1, map2>));
+    STATIC_EXPECT_TRUE((is_same_map_v<map2, map1>));
 }
 
 TEST(MetaMap, Modify) {
