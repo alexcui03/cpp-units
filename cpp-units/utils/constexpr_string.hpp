@@ -20,11 +20,16 @@ struct constexpr_string {
 };
 
 template <std::size_t Length1, std::size_t Length2>
-consteval bool operator==(const constexpr_string<Length1> &lhs, const constexpr_string<Length2> &rhs) {
+constexpr bool operator==(const constexpr_string<Length1> &lhs, const constexpr_string<Length2> &rhs) {
     if constexpr (Length1 != Length2) {
         return false;
     }
     return std::equal(lhs.data, lhs.data + Length1, rhs.data);
+}
+
+template <std::size_t Length1, std::size_t Length2>
+constexpr bool operator!=(const constexpr_string<Length1> &lhs, const constexpr_string<Length2> &rhs) {
+    return !(lhs == rhs);
 }
 
 }

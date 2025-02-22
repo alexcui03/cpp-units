@@ -20,3 +20,14 @@ int main() {
     return 0;
 }
 ```
+
+## Tests
+
+```bash
+cd /path/to/repo
+mkdir build
+cd build
+cmake ..
+cmake --build .
+ctest .
+```
