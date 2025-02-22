@@ -9,7 +9,7 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
-add_executable(test-main utils.cpp dimension.cpp)
+add_executable(test-main utils.cpp dimension.cpp unit.cpp)
 target_link_libraries(test-main GTest::gtest_main)
 
 include(GoogleTest)

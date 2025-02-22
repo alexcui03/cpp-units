@@ -1,10 +1,7 @@
 #include <gtest/gtest.h>
 
-#include <type_traits>
-
 #include "utils.h"
 #include "../cpp-units/utils/constexpr_string.hpp"
-#include "../cpp-units/utils/meta_map.hpp"
 #include "../cpp-units/dimension.hpp"
 
 using namespace cpp_units;
