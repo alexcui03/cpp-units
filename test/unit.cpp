@@ -34,3 +34,18 @@ TEST(Unit, ArithmeticExpression) {
     STATIC_EXPECT_TRUE(value5.value() == 1);
     STATIC_EXPECT_TRUE((is_same_dimension_v<decltype(value5)::dimension, dimensionless>));
 }
+
+TEST(Unit, ArithmeticWithDemensionless) {
+    using test_unit = unit<dimension<"L">, int>;
+    constexpr unit<dimensionless, int> value0(1);
+    constexpr test_unit value1(2);
+
+    EXPECT_EQ((value0 + 10).value(), 11);
+    EXPECT_EQ((10 + value0).value(), 11);
+    EXPECT_EQ((value0 - 10).value(), -9);
+    EXPECT_EQ((10 - value0).value(), 9);
+    EXPECT_EQ((value1 * 10).value(), 20);
+    EXPECT_EQ((10 * value1).value(), 20);
+    EXPECT_EQ((value1 / 10).value(), 0);
+    EXPECT_EQ((10 / value1).value(), 5);
+}

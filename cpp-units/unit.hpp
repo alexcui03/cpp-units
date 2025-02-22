@@ -43,6 +43,7 @@ public:
     }
 };
 
+// Operators
 template <typename Dim1, typename Type1, typename Ratio1, typename Dim2, typename Type2, typename Ratio2>
 requires is_same_dimension_v<Dim1, Dim2>
 constexpr auto operator+(const unit<Dim1, Type1, Ratio1> &lhs, const unit<Dim2, Type2, Ratio2> &rhs) {
@@ -83,6 +84,51 @@ constexpr auto operator/(const unit<Dim1, Type1, Ratio1> &lhs, const unit<Dim2, 
     return unit<dimension_divide_t<Dim1, Dim2>, CommonType, std::ratio_divide<Ratio1, Ratio2>>(
         static_cast<CommonType>(lhs.value()) / static_cast<CommonType>(rhs.value())
     );
+}
+
+// Operators for dimensionless quantities.
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+requires is_same_dimension_v<Dim, dimensionless>
+inline constexpr auto operator+(const unit<Dim, Type, Ratio> &lhs, const ValueType &rhs) {
+    return lhs + unit<dimensionless, ValueType>(rhs);
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+requires is_same_dimension_v<Dim, dimensionless>
+inline constexpr auto operator+(const ValueType &lhs, const unit<Dim, Type, Ratio> &rhs) {
+    return unit<dimensionless, ValueType>(lhs) + rhs;
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+requires is_same_dimension_v<Dim, dimensionless>
+inline constexpr auto operator-(const unit<Dim, Type, Ratio> &lhs, const ValueType &rhs) {
+    return lhs - unit<dimensionless, ValueType>(rhs);
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+requires is_same_dimension_v<Dim, dimensionless>
+inline constexpr auto operator-(const ValueType &lhs, const unit<Dim, Type, Ratio> &rhs) {
+    return unit<dimensionless, ValueType>(lhs) - rhs;
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+inline constexpr auto operator*(const unit<Dim, Type, Ratio> &lhs, const ValueType &rhs) {
+    return lhs * unit<dimensionless, ValueType>(rhs);
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+inline constexpr auto operator*(const ValueType &lhs, const unit<Dim, Type, Ratio> &rhs) {
+    return unit<dimensionless, ValueType>(lhs) * rhs;
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+inline constexpr auto operator/(const unit<Dim, Type, Ratio> &lhs, const ValueType &rhs) {
+    return lhs / unit<dimensionless, ValueType>(rhs);
+}
+
+template <typename Dim, typename Type, typename Ratio, typename ValueType>
+inline constexpr auto operator/(const ValueType &lhs, const unit<Dim, Type, Ratio> &rhs) {
+    return unit<dimensionless, ValueType>(lhs) / rhs;
 }
 
 }
